@@ -16,5 +16,7 @@ config = randomConfiguration(robot);
 % calculate forward kinematics using space form of exp. prods.
 FK_space(robot, config, lastJointIndex)
 
+FK_body(robot, config, lastJointIndex)
+
 % verify result
 getTransform(robot, config, robot.BodyNames{lastJointIndex})

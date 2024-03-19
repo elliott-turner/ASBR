@@ -1,11 +1,12 @@
-% calculate space form FK of robotRBT for given configuration
+% calculate body form FK of robotRBT for given configuration
 % joints beyond lastJointIndex are ignored
-function T = FK_space(robotRBT, configuration, lastJointIndex)
+function T = FK_body(robotRBT, configuration, lastJointIndex)
     % calculate M matrix
-    theta_0 = config0(robotRBT, lastJointIndex);
+    theta_0 = config0(robotRBT,lastJointIndex);
     M = getTransform(robotRBT, theta_0, robotRBT.BodyNames{lastJointIndex});
 
     % get screw axes
+    t = getTransform(robotRBT, theta_0, robotRBT.BodyNames{lastJointIndex});
     lastRot = eye(3);
     screwAxes = {};
     for i = 1:lastJointIndex
@@ -13,14 +14,16 @@ function T = FK_space(robotRBT, configuration, lastJointIndex)
         % apply joint to parent transformation
         jointToParentRot = robotRBT.Bodies{1,i}.Joint.JointToParentTransform(1:3, 1:3);
         omega = jointToParentRot * lastRot * omega.';
+        % convert to be wrt body frame
+        omega = t(1:3, 1:3) * omega;
         lastRot = jointToParentRot * lastRot;
         % this is one of the main reasons matlab sucks...
-        temp = getTransform(robotRBT, theta_0, robotRBT.BodyNames{i});
+        temp = getTransform(robotRBT, theta_0, robotRBT.BodyNames{i}, robotRBT.BodyNames{lastJointIndex});
         q = temp(1:3, end);
         screwAxes{i} = [omega; cross(-omega, q)];
     end
 
-    % calculate forward kinematics using space form of the exponential products
+    % calculate forward kinematics using body form of the exponential products
     T = eye(4);
     for i = 1:lastJointIndex
         omega = screwAxes{i}(1:3);
@@ -32,7 +35,7 @@ function T = FK_space(robotRBT, configuration, lastJointIndex)
         expScrewTheta = expm(Omega * configuration(i).JointPosition);
         T = T * expScrewTheta;
     end
-    T = T * M;
+    T = M * T;
 
     % graphically show the defined frames and screw axes
     figure();
@@ -40,9 +43,16 @@ function T = FK_space(robotRBT, configuration, lastJointIndex)
     show(robotRBT, configuration);
     showScrewAxes(robotRBT, configuration, lastJointIndex);
     % show reference frame
-    quiver3(0, 0, 0, 0.5, 0, 0, 'LineWidth', 4, 'Color', 'red');
-    quiver3(0, 0, 0, 0, 0.5, 0, 'LineWidth', 4, 'Color', 'green');
-    quiver3(0, 0, 0, 0, 0, 0.5, 'LineWidth', 4, 'Color', 'blue');
+    t = getTransform(robotRBT, configuration, robotRBT.BodyNames{lastJointIndex});
+    a = t(1:3, end);
+    b = t(1:3, 1:3) * eye(3);
+    b = b .* 0.5;
+    % quiver3(a(1), a(2), a(3), b(1,1), b(1,2), b(1,3), 'LineWidth', 4, 'Color', 'red');
+    % quiver3(a(1), a(2), a(3), b(2,1), b(2,2), b(2,3), 'LineWidth', 4, 'Color', 'green');
+    % quiver3(a(1), a(2), a(3), b(3,1), b(3,2), b(3,3), 'LineWidth', 4, 'Color', 'blue');
+    quiver3(a(1), a(2), a(3), b(1,1), b(2,1), b(3,1), 'LineWidth', 4, 'Color', 'red');
+    quiver3(a(1), a(2), a(3), b(1,2), b(2,2), b(3,2), 'LineWidth', 4, 'Color', 'green');
+    quiver3(a(1), a(2), a(3), b(1,3), b(2,3), b(3,3), 'LineWidth', 4, 'Color', 'blue');
     % show screw axes
     hold off;
 end
