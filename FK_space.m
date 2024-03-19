@@ -37,12 +37,12 @@ function T = FK_space(robotRBT, configuration, lastJointIndex)
     % graphically show the defined frames and screw axes
     figure();
     hold on;
+    % shwo robot
     show(robotRBT, configuration);
+    % show screw axes
     showScrewAxes(robotRBT, configuration, lastJointIndex);
     % show reference frame
-    quiver3(0, 0, 0, 0.5, 0, 0, 'LineWidth', 4, 'Color', 'red');
-    quiver3(0, 0, 0, 0, 0.5, 0, 'LineWidth', 4, 'Color', 'green');
-    quiver3(0, 0, 0, 0, 0, 0.5, 'LineWidth', 4, 'Color', 'blue');
-    % show screw axes
+    t = eye(4);
+    showFrame(t, 0.5);
     hold off;
 end

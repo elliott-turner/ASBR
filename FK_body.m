@@ -40,19 +40,12 @@ function T = FK_body(robotRBT, configuration, lastJointIndex)
     % graphically show the defined frames and screw axes
     figure();
     hold on;
+    % show robot
     show(robotRBT, configuration);
+    % show screw axes
     showScrewAxes(robotRBT, configuration, lastJointIndex);
     % show reference frame
     t = getTransform(robotRBT, configuration, robotRBT.BodyNames{lastJointIndex});
-    a = t(1:3, end);
-    b = t(1:3, 1:3) * eye(3);
-    b = b .* 0.5;
-    % quiver3(a(1), a(2), a(3), b(1,1), b(1,2), b(1,3), 'LineWidth', 4, 'Color', 'red');
-    % quiver3(a(1), a(2), a(3), b(2,1), b(2,2), b(2,3), 'LineWidth', 4, 'Color', 'green');
-    % quiver3(a(1), a(2), a(3), b(3,1), b(3,2), b(3,3), 'LineWidth', 4, 'Color', 'blue');
-    quiver3(a(1), a(2), a(3), b(1,1), b(2,1), b(3,1), 'LineWidth', 4, 'Color', 'red');
-    quiver3(a(1), a(2), a(3), b(1,2), b(2,2), b(3,2), 'LineWidth', 4, 'Color', 'green');
-    quiver3(a(1), a(2), a(3), b(1,3), b(2,3), b(3,3), 'LineWidth', 4, 'Color', 'blue');
-    % show screw axes
+    showFrame(t, 0.5);
     hold off;
 end
