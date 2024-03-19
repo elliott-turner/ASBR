@@ -2,7 +2,7 @@
 % joints beyond lastJointIndex are ignored
 function T = FK_space(robotRBT, configuration, lastJointIndex)
     % calculate M matrix
-    theta_0 = config0(robotRBT, lastJointIndex);
+    theta_0 = configZero(robotRBT, lastJointIndex);
     M = getTransform(robotRBT, theta_0, robotRBT.BodyNames{lastJointIndex});
 
     % get screw axes
