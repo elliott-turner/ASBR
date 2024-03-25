@@ -1,9 +1,9 @@
-% show angular manipulability ellipsoid of robotRBT for given configuration
+% show linear manipulability ellipsoid of robotRBT for given configuration
 % joints beyond lastJointIndex are ignored
 function ellipsoid_plot_angular(robotRBT, configuration, lastJointIndex)
     J = J_space(robotRBT, configuration, lastJointIndex);
-    J_omega = J(1:3, 1:end);
-    A = J_omega * J_omega.';
+    J_nu = J(4:6, 1:end);
+    A = J_nu * J_nu.';
     T = getTransform(robotRBT, configuration, robotRBT.BodyNames{lastJointIndex});
     p = T(1:3, end);
 
@@ -11,7 +11,7 @@ function ellipsoid_plot_angular(robotRBT, configuration, lastJointIndex)
     figure();
     hold on;
     show(robotRBT, configuration);
-    showEllipsoid(p, A, 0.1);
+    showEllipsoid(p, A, 0.5);
     fixVisualization();
     hold off;
 end
