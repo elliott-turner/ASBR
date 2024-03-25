@@ -42,6 +42,7 @@ function fkBody = FK_body(robotRBT, configuration, lastJointIndex, showVisualiza
     show(robotRBT, configuration);
     % show screw axes
     showScrewAxes(robotRBT, configuration, lastJointIndex);
+    fixVisualization();
     % show reference frame
     t = getTransform(robotRBT, configuration, robotRBT.BodyNames{lastJointIndex});
     showFrame(t, 0.5);

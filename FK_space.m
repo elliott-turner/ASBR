@@ -35,10 +35,11 @@ function fkSpace = FK_space(robotRBT, configuration, lastJointIndex, showVisuali
     % graphically show the defined frames and screw axes
     figure();
     hold on;
-    % shwo robot
+    % show robot
     show(robotRBT, configuration);
     % show screw axes
     showScrewAxes(robotRBT, configuration, lastJointIndex);
+    fixVisualization();
     % show reference frame
     t = eye(4);
     showFrame(t, 0.5);
