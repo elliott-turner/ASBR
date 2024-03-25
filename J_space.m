@@ -3,7 +3,7 @@
 function J = J_space(robotRBT, configuration, lastJointIndex)
     J = zeros(6, lastJointIndex);
 
-    fkSpace = FK_space(robotRBT, configuration, lastJointIndex);
+    fkSpace = FK_space(robotRBT, configZero(robotRBT, lastJointIndex), lastJointIndex);
 
     % calculate exponential twists
     expTwists = cell(1, lastJointIndex);

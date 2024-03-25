@@ -3,7 +3,7 @@
 function J = J_body(robotRBT, configuration, lastJointIndex)
     J = zeros(6, lastJointIndex);
 
-    fkBody = FK_body(robotRBT, configuration, lastJointIndex);
+    fkBody = FK_body(robotRBT, configZero(robotRBT, lastJointIndex), lastJointIndex);
 
     % calculate exponential twists
     expTwists = cell(1, lastJointIndex);
