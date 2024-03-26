@@ -1,7 +1,7 @@
-% uses iterative numerical inverse kinematics algorithm to
+% uses redundancy resolution to avoid singularities and
 % move robot from configuration_a to configuration_b
 % joints beyond lastJointIndex are ignored
-function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_b, lastJointIndex, angularError, linearError, maxIterations, showVisualization)
+function result = redundancy_resolution(robotRBT, configuration_a, configuration_b, lastJointIndex, angularError, linearError, maxIterations, scale, showVisualization)
     i = 1;
     configurations = {};
     result.Status = 0;
@@ -14,7 +14,9 @@ function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_
             result.Status = 1;
             break;
         end
-        deltaTheta = pinv(J_space(robotRBT, configuration_a, lastJointIndex)) * e;
+        J = J_space(robotRBT, configuration_a, lastJointIndex);
+        manipulability = sqrt(det(J * J'));
+        deltaTheta = pinv(J) * e + scale * pinv(J) * (1 / manipulability);
         for j = 1:lastJointIndex
             configuration_a(j).JointPosition = configuration_a(j).JointPosition + deltaTheta(j);
         end
