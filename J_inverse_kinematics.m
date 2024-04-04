@@ -32,8 +32,8 @@ function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_
     figure();
     hold on;
     % show robot
-    if i > 50
-        i = 50;
+    if i > maxIterations
+        i = maxIterations;
     end
     for j = 1:i
         show(robotRBT, configurations{j}, "Frames", "off");
