@@ -9,7 +9,7 @@ config = thetaToConfiguration([0, 0.5, 1, -1.5, 0, 1, 0], setup.Robot);
 
 test_config1 = thetaToConfiguration([1, 1, 1, 1, 1, pi()/2, pi()/2], setup.Robot);
 test_config2 = thetaToConfiguration([0, 0, 0, 0, 0, 0, .5], setup.Robot);
-test_config3 = thetaToConfiguration([-2.32091309006656, 1.35112354159160, -0.448466158499428, -2.91638779175440, -2.76316625538014, 0.974815122731441, 1.00736548019515]);
+test_config3 = thetaToConfiguration([-2.32091309006656, 1.35112354159160, -0.448466158499428, -2.91638779175440, -2.76316625538014, 0.974815122731441, 1.00736548019515], setup.Robot);
 
 config_a = randomConfiguration(setup.Robot);
 config_b = randomConfiguration(setup.Robot);
