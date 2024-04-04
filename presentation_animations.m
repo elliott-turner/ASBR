@@ -16,3 +16,12 @@ result = J_inverse_kinematics(setup.Robot, config_a, test_config2, setup.LastJoi
 % result = J_transpose_kinematics(setup.Robot, config_a, config_b, setup.LastJointIndex, 0.01, 50, 0.5)
 
 animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/test.mp4")
+
+% configurations for going near a singularity
+config_a = thetaToConfiguration([1.2, 0.5, 0.4, 1.6, 0, 0.4, 0.2], setup.Robot);
+config_b = thetaToConfiguration([-1.2, 0.5, 0.4, 1.2, 0, 0.6, 0.2], setup.Robot);
+
+result = J_inverse_kinematics(setup.Robot, config_a, config_b, setup.LastJointIndex, 0.01, 0.001, 50);
+animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/4_a.mp4");
+result = redundancy_resolution(setup.Robot, config_a, config_b, setup.LastJointIndex, 0.01, 0.001, 50, 0.0001)
+animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/4_b.mp4");
