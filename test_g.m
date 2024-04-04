@@ -5,11 +5,11 @@ config = randomConfiguration(setup.Robot);
 homeConfig = configZero(setup.Robot, setup.LastJointIndex);
 
 % a
-ellipsoid_plot_angular(setup.Robot, config, setup.LastJointIndex);
-ellipsoid_plot_linear(setup.Robot, config, setup.LastJointIndex);
+ellipsoid_plot_angular(setup.Robot, config, setup.LastJointIndex, true);
+ellipsoid_plot_linear(setup.Robot, config, setup.LastJointIndex, true);
 
-ellipsoid_plot_angular(setup.Robot, homeConfig, setup.LastJointIndex);
-ellipsoid_plot_linear(setup.Robot, homeConfig, setup.LastJointIndex);
+ellipsoid_plot_angular(setup.Robot, homeConfig, setup.LastJointIndex, true);
+ellipsoid_plot_linear(setup.Robot, homeConfig, setup.LastJointIndex, true);
 
 % b
 mu_1 = J_isotropy(setup.Robot, config, setup.LastJointIndex);
