@@ -5,7 +5,7 @@ function result = J_transpose_kinematics(robotRBT, configuration_a, configuratio
     i = 1;
     configurations = {};
     result.Status = 0;
-    e = calculateErrorTranspose(...
+    e = calculateError(...
         FK_space(robotRBT, configuration_a, lastJointIndex).T, ...
         FK_space(robotRBT, configuration_b, lastJointIndex).T);
     while i <= maxIterations
@@ -18,7 +18,7 @@ function result = J_transpose_kinematics(robotRBT, configuration_a, configuratio
         for j = 1:lastJointIndex
             configuration_a(j).JointPosition = configuration_a(j).JointPosition + deltaTheta(j);
         end
-        e = calculateErrorTranspose(...
+        e = calculateError(...
             FK_space(robotRBT, configuration_a, lastJointIndex).T, ...
             FK_space(robotRBT, configuration_b, lastJointIndex).T);
         i = i + 1;
@@ -47,10 +47,4 @@ function result = J_transpose_kinematics(robotRBT, configuration_a, configuratio
     axis vis3d; % keeps it from zooming in and out to fit in plot window
     grid on; % background grid
     hold off;
-end
-
-function e = calculateErrorTranspose(T1, T2)
-    v1 = [T1(3, 2); T1(1, 3); T1(2, 1); T1(1: 3, 4)];
-    v2 = [T2(3, 2); T2(1, 3); T2(2, 1); T2(1: 3, 4)];
-    e = v2 - v1;
 end
