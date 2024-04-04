@@ -4,7 +4,8 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
     prev_mu_3 = [];
     fig = figure;
     axis tight manual
-    writer = VideoWriter(fileName);
+    writer = VideoWriter(fileName, 'MPEG-4');
+    writer.Quality = 100;
     writer.FrameRate = 10;
     open(writer);
     for i = 1:length(configurations)
