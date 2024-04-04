@@ -27,6 +27,7 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
     end
     result.Configuration = configuration_a;
     result.IterationCount = i;
+    result.Configurations = configurations;
     if ~exist('showVisualization', 'var')
         return;
     end
@@ -34,8 +35,8 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
     figure();
     hold on;
     % show robot
-    if i > 50
-        i = 50;
+    if i > maxIterations
+        i = maxIterations;
     end
     for j = 1:i
         show(robotRBT, configurations{j}, "Frames", "off");
