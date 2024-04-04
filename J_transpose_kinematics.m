@@ -37,8 +37,7 @@ function result = J_transpose_kinematics(robotRBT, configuration_a, configuratio
         i = maxIterations;
     end
     for j = 1:i
-        show(robotRBT, configurations{j}, "Frames", "off", "PreservePlot", false);
-        drawnow
+        show(robotRBT, configurations{j}, "Frames", "off");
     end
     set(findall(gca, 'Type', 'patch'), 'FaceAlpha', 0.1); % make transparent
     show(robotRBT, configuration_b);
