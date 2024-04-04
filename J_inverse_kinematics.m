@@ -36,7 +36,9 @@ function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_
         i = 50;
     end
     for j = 1:i
-        show(robotRBT, configurations{j}, "Frames", "off");
+        show(robotRBT, configurations{j}, "Frames", "off", "PreservePlot", false);
+        fixVisualization();
+        drawnow
     end
     set(findall(gca, 'Type', 'patch'), 'FaceAlpha', 0.1); % make transparent
     show(robotRBT, configuration_b);
