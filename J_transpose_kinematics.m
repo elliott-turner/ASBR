@@ -25,6 +25,7 @@ function result = J_transpose_kinematics(robotRBT, configuration_a, configuratio
     end
     result.Configuration = configuration_a;
     result.IterationCount = i;
+    result.Configurations = configurations;
     if ~exist('showVisualization', 'var')
         return;
     end

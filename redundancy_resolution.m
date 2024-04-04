@@ -27,6 +27,7 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
     end
     result.Configuration = configuration_a;
     result.IterationCount = i;
+    result.Configurations = configurations;
     if ~exist('showVisualization', 'var')
         return;
     end
