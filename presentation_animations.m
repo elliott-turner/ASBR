@@ -14,7 +14,7 @@ test_config3 = thetaToConfiguration([-2.32091309006656, 1.35112354159160, -0.448
 config_a = randomConfiguration(setup.Robot);
 config_b = randomConfiguration(setup.Robot);
 
-result = J_inverse_kinematics(setup.Robot, config_a, test_config2, setup.LastJointIndex, 0.01, 0.001, 50)
-% result = J_transpose_kinematics(setup.Robot, config_a, config_b, setup.LastJointIndex, 0.01, 50, 0.5)
+%result = J_inverse_kinematics(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 0.001, 50)
+result = J_transpose_kinematics(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 50, 0.5)
 
 animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/test.mp4")
