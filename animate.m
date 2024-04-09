@@ -1,4 +1,4 @@
-function animate(robotRBT, lastJointIndex, configurations, fileName)
+function animate(robotRBT, lastJointIndex, configurations, fileName, plotTitle, frameRate)
     prev_mu_1 = [];
     prev_mu_2 = [];
     prev_mu_3 = [];
@@ -11,7 +11,7 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
     set(gcf,'position',[x0,y0,width,height])
     writer = VideoWriter(fileName, 'MPEG-4');
     writer.Quality = 100;
-    writer.FrameRate = 10;
+    writer.FrameRate = frameRate;
     open(writer);
     for i = 1:length(configurations)
         clf(fig);
@@ -52,6 +52,8 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
         legend({'Angular', 'Linear'});
         title('\mu_3 (volume)');
         xlabel('iteration')
+
+        sgtitle(plotTitle);
 
         frame = getframe(fig);
         writeVideo(writer, frame);
