@@ -1,4 +1,4 @@
-function animate(robotRBT, lastJointIndex, configurations, fileName, plotTitle, frameRate)
+function mus = animate(robotRBT, lastJointIndex, configurations, fileName, plotTitle, frameRate)
     prev_mu_1 = [];
     prev_mu_2 = [];
     prev_mu_3 = [];
@@ -60,4 +60,9 @@ function animate(robotRBT, lastJointIndex, configurations, fileName, plotTitle, 
     end
     close(writer);
     close(fig);
+
+    % this is gross
+    mus.mu1 = prev_mu_1;
+    mus.mu2 = prev_mu_2;
+    mus.mu3 = prev_mu_3;
 end

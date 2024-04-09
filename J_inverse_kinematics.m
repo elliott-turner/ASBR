@@ -4,12 +4,16 @@
 function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_b, lastJointIndex, angularError, linearError, maxIterations, showVisualization)
     i = 1;
     configurations = {};
+    angularErrors = [];
+    linearErrors = [];
     result.Status = 0;
     e = calculateError(...
         FK_space(robotRBT, configuration_a, lastJointIndex).T, ...
         FK_space(robotRBT, configuration_b, lastJointIndex).T);
     while i <= maxIterations
         configurations{i} = configuration_a;
+        angularErrors(i) = norm(e(1:3));
+        linearErrors(i) = norm(e(4:6));
         if norm(e(1:3)) <= angularError && norm(e(4:6)) <= linearError
             result.Status = 1;
             break;
@@ -26,6 +30,8 @@ function result = J_inverse_kinematics(robotRBT, configuration_a, configuration_
     result.Configuration = configuration_a;
     result.IterationCount = i;
     result.Configurations = configurations;
+    result.AngularErrors = angularErrors;
+    result.LinearErrors = linearErrors;
     if ~exist('showVisualization', 'var')
         return;
     end
