@@ -5,6 +5,9 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
     i = 1;
     configurations = {};
     result.Status = 0;
+    % value of previous iteration for numerical derivation
+    lastMu = 0;
+    lastTheta = zeros(lastJointIndex, 1);
     e = calculateError(...
         FK_space(robotRBT, configuration_a, lastJointIndex).T, ...
         FK_space(robotRBT, configuration_b, lastJointIndex).T);
@@ -15,16 +18,24 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
             break;
         end
         J = J_space(robotRBT, configuration_a, lastJointIndex);
+<<<<<<< HEAD
         manipulability = sqrt(det(J * J'));
         deltaTheta = pinv(J) * e + scale * pinv(J) * (1 / manipulability);
         %deltaTheta = pinv(J) 8 e + scale * pinv(J) * (1 / manipulability)
         %* 
+=======
+        mu = sqrt(det(J * J'));
+        deltaMu = (mu - lastMu) ./ pinv(J) * e; % denominator is wrong?
+        deltaTheta = pinv(J) * e + scale .* (eye(7) - pinv(J) * J) * deltaMu;
+>>>>>>> bf991f7823754219ec0dd28a367471d2df81d786
         for j = 1:lastJointIndex
             configuration_a(j).JointPosition = configuration_a(j).JointPosition + deltaTheta(j);
         end
         e = calculateError(...
             FK_space(robotRBT, configuration_a, lastJointIndex).T, ...
             FK_space(robotRBT, configuration_b, lastJointIndex).T);
+        lastMu = mu;
+        lastTheta = deltaTheta;
         i = i + 1;
     end
     result.Configuration = configuration_a;
