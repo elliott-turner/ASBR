@@ -17,6 +17,8 @@ function result = redundancy_resolution(robotRBT, configuration_a, configuration
         J = J_space(robotRBT, configuration_a, lastJointIndex);
         manipulability = sqrt(det(J * J'));
         deltaTheta = pinv(J) * e + scale * pinv(J) * (1 / manipulability);
+        %deltaTheta = pinv(J) 8 e + scale * pinv(J) * (1 / manipulability)
+        %* 
         for j = 1:lastJointIndex
             configuration_a(j).JointPosition = configuration_a(j).JointPosition + deltaTheta(j);
         end

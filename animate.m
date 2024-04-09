@@ -3,7 +3,12 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
     prev_mu_2 = [];
     prev_mu_3 = [];
     fig = figure;
+    x0=10;
+    y0=10;
+    width = 1200;
+    height = 800;
     axis tight manual
+    set(gcf,'position',[x0,y0,width,height])
     writer = VideoWriter(fileName, 'MPEG-4');
     writer.Quality = 100;
     writer.FrameRate = 10;
