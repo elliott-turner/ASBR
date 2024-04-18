@@ -1,4 +1,4 @@
-function animate(robotRBT, lastJointIndex, configurations, fileName)
+function mus = animate(robotRBT, lastJointIndex, configurations, fileName, plotTitle, frameRate)
     prev_mu_1 = [];
     prev_mu_2 = [];
     prev_mu_3 = [];
@@ -11,7 +11,7 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
     set(gcf,'position',[x0,y0,width,height])
     writer = VideoWriter(fileName, 'MPEG-4');
     writer.Quality = 100;
-    writer.FrameRate = 10;
+    writer.FrameRate = frameRate;
     open(writer);
     for i = 1:length(configurations)
         clf(fig);
@@ -25,31 +25,44 @@ function animate(robotRBT, lastJointIndex, configurations, fileName)
         fixVisualization();
         hold off;
         title('Robot Configuration');
+        xlabel('x [m]')
+        ylabel('y [m]')
+        zlabel('z [m]')
 
         mu_1 = J_isotropy(robotRBT, configurations{i}, lastJointIndex);
         prev_mu_1 = [prev_mu_1; [mu_1.Angular, mu_1.Linear]];
         subplot(3, 2, 2);
-        plot(1:size(prev_mu_1, 1), prev_mu_1(:, 1), '-o', 1:size(prev_mu_1, 1), prev_mu_1(:, 2), '-o');
+        plot(1:size(prev_mu_1, 1), prev_mu_1(:, 1), '-', 1:size(prev_mu_1, 1), prev_mu_1(:, 2), '-');
         legend({'Angular', 'Linear'});
-        title('\mu_1');
+        title('\mu_1 (isotropy)');
+        xlabel('iteration')
 
         mu_2 = J_condition(robotRBT, configurations{i}, lastJointIndex);
         prev_mu_2 = [prev_mu_2; [mu_2.Angular, mu_2.Linear]];
         subplot(3, 2, 4);
-        plot(1:size(prev_mu_2, 1), prev_mu_2(:, 1), '-o', 1:size(prev_mu_2, 1), prev_mu_2(:, 2), '-o');
+        plot(1:size(prev_mu_2, 1), prev_mu_2(:, 1), '-', 1:size(prev_mu_2, 1), prev_mu_2(:, 2), '-');
         legend({'Angular', 'Linear'});
-        title('\mu_2');
+        title('\mu_2 (condition)');
+        xlabel('iteration')
 
         mu_3 = J_ellipsoid_volume(robotRBT, configurations{i}, lastJointIndex);
         prev_mu_3 = [prev_mu_3; [mu_3.Angular, mu_3.Linear]];
         subplot(3, 2, 6);
-        plot(1:size(prev_mu_3, 1), prev_mu_3(:, 1), '-o', 1:size(prev_mu_3, 1), prev_mu_3(:, 2), '-o');
+        plot(1:size(prev_mu_3, 1), prev_mu_3(:, 1), '-', 1:size(prev_mu_3, 1), prev_mu_3(:, 2), '-');
         legend({'Angular', 'Linear'});
-        title('\mu_3');
+        title('\mu_3 (volume)');
+        xlabel('iteration')
+
+        sgtitle(plotTitle);
 
         frame = getframe(fig);
         writeVideo(writer, frame);
     end
     close(writer);
     close(fig);
+
+    % this is gross
+    mus.mu1 = prev_mu_1;
+    mus.mu2 = prev_mu_2;
+    mus.mu3 = prev_mu_3;
 end
