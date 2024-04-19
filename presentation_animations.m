@@ -11,21 +11,15 @@ config_1b = thetaToConfiguration([1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 1.5], setup.Robo
 config_2a = thetaToConfiguration([1.2, 0.5, 0.4, 1.6, 0.0, 0.4, 0.2], setup.Robot);
 config_2b = thetaToConfiguration([-1.2, 0.5, 0.4, 1.2, 0.0, 0.6, 0.2], setup.Robot);
 
-% run algorithms on configurations
-result_h1 = J_inverse_kinematics(setup.Robot, config_1a, config_1b, setup.LastJointIndex, 0.01, 0.001, 50)
-result_h2 = J_inverse_kinematics(setup.Robot, config_2a, config_2b, setup.LastJointIndex, 0.01, 0.001, 50)
-result_i1 = J_transpose_kinematics(setup.Robot, config_1a, config_1b, setup.LastJointIndex, 0.01, 500, 0.5)
-result_i2 = J_transpose_kinematics(setup.Robot, config_2a, config_2b, setup.LastJointIndex, 0.01, 500, 0.5)
-result_j1 = redundancy_resolution(setup.Robot, config_1a, config_1b, setup.LastJointIndex, 0.01, 0.001, 50, 5)
-result_j2 = redundancy_resolution(setup.Robot, config_2a, config_2b, setup.LastJointIndex, 0.01, 0.001, 50, 5)
+test_config1 = thetaToConfiguration([1.2, 0.5, 0.4, 1.6, 0, 0.4, 0.2], setup.Robot);
+test_config2 = thetaToConfiguration([-1.2, 0.5, 0.4, 1.2, 0, 0.6, 0.2], setup.Robot);
+test_config3 = thetaToConfiguration([-2.32091309006656, 1.35112354159160, -0.448466158499428, -2.91638779175440, -2.76316625538014, 0.974815122731441, 1.00736548019515], setup.Robot);
+test_config4 = thetaToConfiguration([0, 0, 0, 0, 0, 2, .5], setup.Robot);
+config_a = randomConfiguration(setup.Robot);
+config_b = randomConfiguration(setup.Robot);
 
-% render animations of algorithm runs
-mus_h1 = animate(setup.Robot, setup.LastJointIndex, result_h1.Configurations, 'animations/h1.mp4', 'Pseudoinverse 1', result_h1.IterationCount / animation_length);
-mus_h2 = animate(setup.Robot, setup.LastJointIndex, result_h2.Configurations, 'animations/h2.mp4', 'Pseudoinverse 2', result_h2.IterationCount / animation_length);
-mus_i1 = animate(setup.Robot, setup.LastJointIndex, result_i1.Configurations, 'animations/i1.mp4', 'Transpose 1', result_i1.IterationCount / animation_length);
-mus_i2 = animate(setup.Robot, setup.LastJointIndex, result_i2.Configurations, 'animations/i2.mp4', 'Transpose 2', result_i2.IterationCount / animation_length);
-mus_j1 = animate(setup.Robot, setup.LastJointIndex, result_j1.Configurations, 'animations/j1.mp4', 'Redundancy 1', result_j1.IterationCount / animation_length);
-mus_j2 = animate(setup.Robot, setup.LastJointIndex, result_j2.Configurations, 'animations/j2.mp4', 'Redundancy 2', result_j2.IterationCount / animation_length);
+%result = J_inverse_kinematics(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 0.001, 50)
+result = J_transpose_kinematics(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 500, 0.5)
 
 % compare errors
 fig = figure;
@@ -45,18 +39,7 @@ hold off;
 saveas(fig, 'animations/error_comp.png')
 
 
-% compare manipulability measures
-fig = figure;
-m_h = mus_h2.mu1;
-m_j = mus_j2.mu1;
-plot(m_h(:,1));
-hold on;
-plot(m_h(:,2));
-plot(m_j(:,1));
-plot(m_j(:,2));
-xlabel('iteration');
-ylabel('isotropy');
-title('Isotropy vs Iteration With and Without Redundancy Resolution');
-legend('angular w/o', 'linear w/o', 'angular w/', 'linear w/');
-hold off;
-saveas(fig, 'animations/mu_comp.png')
+result = J_inverse_kinematics(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 0.001, 50);
+animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/4_a.mp4");
+result = redundancy_resolution(setup.Robot, test_config3, test_config2, setup.LastJointIndex, 0.01, 0.001, 50, 5)
+animate(setup.Robot, setup.LastJointIndex, result.Configurations, "animations/4_b.mp4");

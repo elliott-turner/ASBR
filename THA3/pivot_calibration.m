@@ -16,8 +16,8 @@ function [b_tip,b_post] = pivot_calibration(data,opt)
             F_D = inv(registration(data.d,data.D_opt{iFrame}));
         end
         F_G = F_D * registration(g,data.G{iFrame});
-        A((iFrame-1)*3+1:(iFrame-1)*3+3,:) = [F_G(1:3,1:3), -eye(3)]; % R
-        b((iFrame-1)*3+1:(iFrame-1)*3+3,:) = -F_G(1:3,4); % p
+        A((iFrame-1)*3+1:(iFrame-1)*3+3,:) = [F_G(1:3,1:3), -eye(3)]; % [R_k -I]
+        b((iFrame-1)*3+1:(iFrame-1)*3+3,:) = -F_G(1:3,4); % [-p_k]
     end
 
     % c. solve the system
