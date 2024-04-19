@@ -10,7 +10,8 @@ for iDebug = 1:length(debug_letters)
     name = strcat('pa1-debug-',debug_letters(iDebug));
     output = tha3_pa1(dir,name);
     [~,correct_output] = read_file(dir, strcat(name,'-output1.txt'));
-    max(output.data - correct_output)
+    disp(['output error for dataset ',debug_letters(iDebug),':']);
+    disp(max(output.data - correct_output));
     write_file(outputDir,name,output);
 end
 
