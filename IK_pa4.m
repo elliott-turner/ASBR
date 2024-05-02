@@ -1,6 +1,6 @@
 % keeps tool tip as close as possible to p_goal while never going
 % tol away from the goal and obeying joint limits
-function result = IK_pa4_a(robotRBT,lastJointIndex,config_a,p_goal,tol,maxIterations,zeta,eta)
+function result = IK_pa4(robotRBT,lastJointIndex,config_a,p_goal,tol,maxIterations,zeta,eta)
     i = 1;
     config_b = config_a;
     configurations = {};
