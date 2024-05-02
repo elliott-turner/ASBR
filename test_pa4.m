@@ -7,7 +7,7 @@ result = IK_pa4(setup.Robot,setup.LastJointIndex,config,p_goal,0.003,100,1,0);
 visualizeResult(setup,result,p_goal,"p_{goal}=[0.5,0.5,0.5], zeta=1.0, eta=0.0");
 plotMeasures(setup,result);
 
-result = IK_pa4(setup.Robot,setup.LastJointIndex,config_1,p_goal,0.003,100,0.90,0.10);
+result = IK_pa4(setup.Robot,setup.LastJointIndex,config,p_goal,0.003,100,0.90,0.10);
 visualizeResult(setup,result,p_goal,"p_{goal}=[0.5,0.5,0.5], zeta=0.9, eta=0.1");
 plotMeasures(setup,result);
 
